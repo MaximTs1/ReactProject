@@ -11,13 +11,10 @@ export default function App() {
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
 
-  //
-  const [theme, setTheme] = useState("dark");
-
-  const toggleTheme = () => {
-    setTheme((curr) => (curr === "light" ? "dark" : "light"));
-  };
-  //
+  // const [theme, setTheme] = useState("dark");
+  // const toggleTheme = () => {
+  //   setTheme((curr) => (curr === "light" ? "dark" : "light"));
+  // };
 
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
@@ -43,6 +40,7 @@ export default function App() {
         }
       })
       .catch((err) => {
+        setUser();
         setRoleType(RoleTypes.none);
       })
       .finally(() => setLoader(false));
