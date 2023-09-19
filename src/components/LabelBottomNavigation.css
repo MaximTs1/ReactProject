@@ -1,0 +1,29 @@
+/* Add this CSS to your stylesheet or component's CSS file */
+.custom-bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff; /* Change the background color as needed */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  /* Add any other styling you need */
+}
+
+  .custom-bottom-navigation {
+    /* Set the background color to transparent (optional) */
+    background-color: transparent !important;
+  }
+  
+  /* Override the icon color for both unselected and selected states */
+  .custom-bottom-navigation .MuiBottomNavigationAction-root {
+    color: grey !important; /* Set your desired color here */
+  }
+  
+  /* Override the selected state color (if needed) */
+  .custom-bottom-navigation .Mui-selected {
+    background-color: transparent !important; /* Set the background color to transparent (optional) */
+    color: grey !important; /* Set the same color for selected icons if needed */
+  }
+  
