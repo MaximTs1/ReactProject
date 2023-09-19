@@ -3,6 +3,9 @@ import "./App.css";
 import Router from "./Router";
 import Navbar, { RoleTypes } from "./components/Navbar";
 import Loader from "./components/Loader";
+import LabelBottomNavigation from "./components/LabelBottomNavigation";
+// import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+
 
 export const GeneralContext = createContext();
 
@@ -10,12 +13,7 @@ export default function App() {
   const [user, setUser] = useState();
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
-
-  // const [theme, setTheme] = useState("dark");
-  // const toggleTheme = () => {
-  //   setTheme((curr) => (curr === "light" ? "dark" : "light"));
-  // };
-
+  
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
       credentials: "include",
@@ -50,9 +48,12 @@ export default function App() {
     <GeneralContext.Provider
       value={{ user, setUser, setLoader, roleType, setRoleType }}
     >
-      <Navbar />
-      <Router />
-      {loader && <Loader />}
+      <div className="app-container">
+        <Navbar />
+        <Router />
+        {loader && <Loader />}
+      </div>
+      <LabelBottomNavigation />
     </GeneralContext.Provider>
   );
 }

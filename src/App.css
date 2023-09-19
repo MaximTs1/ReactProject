@@ -1,0 +1,18 @@
+/* App.css */
+
+.app-container {
+    position: relative;
+    min-height: 100vh; /* Ensure the container covers the entire viewport height */
+  }
+  
+  /* Style for LabelBottomNavigation */
+  .LabelBottomNavigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff; /* Change the background color as needed */
+    /* You can customize padding, colors, or other styles here */
+    /* Example padding: 10px; */
+  }
+  
