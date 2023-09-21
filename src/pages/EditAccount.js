@@ -1,9 +1,24 @@
 import { useEffect, useState } from "react";
 import Joi from "joi";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { FormControlLabel } from "@mui/material";
+import { useContext } from "react";
+import { GeneralContext } from "../App";
+import Switch from "@mui/material/Switch";
 
 export default function EditAccount({ item, itemChange }) {
+  const { setLoader } = useContext(GeneralContext);
   const [formData, setFormData] = useState({
-    id: 0, // Initialize id with 0 or an appropriate default value
+    id: 0,
     firstName: "",
     middleName: "",
     lastName: "",
@@ -15,13 +30,131 @@ export default function EditAccount({ item, itemChange }) {
     country: "",
     city: "",
     street: "",
-    houseNumber: 0, // Initialize numeric fields with 0 or appropriate values
+    houseNumber: 0,
     zip: 0,
-    business: false, // Use a checkbox for boolean values
+    business: false,
     fullName: "",
   });
-  const [errors, setErrors] = useState({});
+  const structure = [
+    {
+      name: "firstName",
+      type: "text",
+      label: "First name",
+      required: true,
+      block: false,
+    },
+    {
+      name: "middleName",
+      type: "text",
+      label: "Middle name",
+      required: true,
+      block: false,
+    },
+    {
+      name: "lastName",
+      type: "text",
+      label: "Last name",
+      required: true,
+      block: false,
+    },
+    {
+      name: "phone",
+      type: "tel",
+      label: "phone",
+      required: true,
+      block: false,
+    },
+    {
+      name: "email",
+      type: "email",
+      label: "email",
+      required: true,
+      block: false,
+    },
+    {
+      name: "password",
+      type: "password",
+      label: "password",
+      required: true,
+      block: false,
+    },
+    {
+      name: "imgUrl",
+      type: "text",
+      label: "Img url",
+      required: true,
+      block: true,
+    },
+    {
+      name: "imgAlt",
+      type: "text",
+      label: "Img alt",
+      required: true,
+      block: false,
+    },
+    {
+      name: "state",
+      type: "text",
+      label: "state",
+      required: true,
+      block: false,
+    },
+    {
+      name: "country",
+      type: "text",
+      label: "country",
+      required: true,
+      block: false,
+    },
+    { name: "city", type: "text", label: "city", required: true, block: false },
+    {
+      name: "street",
+      type: "text",
+      label: "street",
+      required: true,
+      block: false,
+    },
+    {
+      name: "houseNumber",
+      type: "number",
+      label: "House number",
+      required: true,
+      block: false,
+    },
+    {
+      name: "zip",
+      type: "number",
+      label: "number",
+      required: true,
+      block: false,
+    },
+    {
+      name: "business",
+      type: "boolean",
+      label: "business",
+      required: true,
+      block: false,
+    },
+  ];
 
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    const obj = {};
+    const elements = ev.target.elements;
+
+    structure.forEach((s) => {
+      if (s.type === "boolean") {
+        obj[s.name] = elements[s.name].value === "on";
+      } else {
+        obj[s.name] = elements[s.name].value;
+      }
+    });
+
+    setLoader(true);
+  };
+
+  const [errors, setErrors] = useState({});
+  const defaultTheme = createTheme();
   const accountSchema = Joi.object({
     id: Joi.number().required(),
     firstName: Joi.string().min(3).required(),
@@ -95,7 +228,6 @@ export default function EditAccount({ item, itemChange }) {
         return response.json();
       })
       .then((data) => {
-        // Handle the response data if needed
         console.log("Data saved successfully:", data);
         itemChange(formData);
       })
@@ -107,155 +239,66 @@ export default function EditAccount({ item, itemChange }) {
   return (
     <>
       {item && (
-        <div className="modal-frame">
-          <div className="modal">
-            <header>
-              <button className="close" onClick={() => itemChange()}>
-                x
-              </button>
-              <h2>עריכת משתמש</h2>
-            </header>
-
-            <form onSubmit={save}>
-              <label>
-                firstName:
-                <input
-                  type="text"
-                  value={formData.firstName}
-                  id="firstName"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                middleName:
-                <input
-                  type="text"
-                  value={formData.middleName}
-                  id="middleName"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                lastName:
-                <input
-                  type="text"
-                  value={formData.lastName}
-                  id="lastName"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                phone:
-                <input
-                  type="text"
-                  value={formData.phone}
-                  id="phone"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                email:
-                <input
-                  type="text"
-                  value={formData.email}
-                  id="email"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                imgUrl:
-                <input
-                  type="text"
-                  value={formData.imgUrl}
-                  id="imgUrl"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                imgAlt:
-                <input
-                  type="text"
-                  value={formData.imgAlt}
-                  id="imgAlt"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                state:
-                <input
-                  type="text"
-                  value={formData.state}
-                  id="state"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                country:
-                <input
-                  type="text"
-                  value={formData.country}
-                  id="country"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                city:
-                <input
-                  type="text"
-                  value={formData.city}
-                  id="city"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                street:
-                <input
-                  type="text"
-                  value={formData.street}
-                  id="street"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                houseNumber:
-                <input
-                  type="text"
-                  value={formData.houseNumber}
-                  id="houseNumber"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                zip:
-                <input
-                  type="text"
-                  value={formData.zip}
-                  id="zip"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                business:
-                <input
-                  type="checkbox"
-                  checked={formData.business}
-                  id="business"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label>
-                fullName:
-                <input
-                  type="text"
-                  value={formData.fullName}
-                  id="fullName"
-                  onChange={handleInputChange}
-                />
-              </label>
-              <button>שמור</button>
-            </form>
-          </div>
-        </div>
+        <ThemeProvider theme={defaultTheme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Edit Account
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
+              >
+                <Grid container spacing={2}>
+                  {structure.map((s) => (
+                    <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
+                      {s.type === "boolean" ? (
+                        <FormControlLabel
+                          name={s.name}
+                          control={<Switch color="primary" />}
+                          label={s.label}
+                          labelPlacement="start"
+                        />
+                      ) : (
+                        <TextField
+                          name={s.name}
+                          fullWidth
+                          id={s.name}
+                          label={s.label}
+                          type={s.type}
+                          value={formData[s.name]}
+                          onChange={handleInputChange}
+                        />
+                      )}
+                    </Grid>
+                  ))}
+                </Grid>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={save}
+                >
+                  Save
+                </Button>
+              </Box>
+            </Box>
+          </Container>
+        </ThemeProvider>
       )}
     </>
   );

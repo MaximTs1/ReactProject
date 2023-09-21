@@ -1,10 +1,6 @@
 import { useState, useContext } from "react";
-// import { BsMoonFill, BsSunFill } from "react-icons/bs";
-// import { NavLink } from "react-router-dom";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Searchbar from "./Searchbar";
-import ToggleColorMode from "./ToggleColorMode";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,6 +15,8 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { GeneralContext } from "../App";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import Brightness2Icon from "@mui/icons-material/Brightness2";
 
 export const RoleTypes = {
   none: 0,
@@ -56,10 +54,10 @@ const settings = [
   },
 ];
 
-export default function Navbar() {
+export default function Navbar({ toggleDarkMode }) {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { user, roleType, setUser, setRoleType, setLoader } =
+  const { user, roleType, setUser, setRoleType, setLoader, darkMode } =
     useContext(GeneralContext);
   const navigate = useNavigate();
   const path = useResolvedPath().pathname;
@@ -95,7 +93,10 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      className={`navbar ${darkMode ? "dark-mode" : ""}`}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
@@ -215,19 +216,9 @@ export default function Navbar() {
 
           <Searchbar />
 
-          {/* <Box>
-            <div className="navbar-end">
-              <label className="swap swap-rotate">
-                <input type="checkbox" onClick={onclick} />
-
-                <BsSunFill className="swap-on h-4 w-4" display={"none"} />
-
-                <BsMoonFill className="swap-off h-4 w-4" />
-              </label>
-            </div>
-          </Box> */}
-
-          <ToggleColorMode />
+          <Button onClick={toggleDarkMode} color="inherit">
+            {darkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
+          </Button>
 
           {user && (
             <Box sx={{ flexGrow: 0 }}>
