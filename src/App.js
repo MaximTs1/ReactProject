@@ -14,7 +14,7 @@ export default function App() {
   const [user, setUser] = useState();
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
-
+  
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
       credentials: "include",
@@ -39,6 +39,7 @@ export default function App() {
         }
       })
       .catch((err) => {
+        setUser();
         setRoleType(RoleTypes.none);
       })
       .finally(() => setLoader(false));
