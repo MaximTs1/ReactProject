@@ -14,6 +14,8 @@ export default function App() {
   const [user, setUser] = useState();
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
+  const [searchWord, setSearchWord] = useState('');
+
   
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
@@ -46,8 +48,9 @@ export default function App() {
   }, []);
 
   return (
+    
     <GeneralContext.Provider
-      value={{ user, setUser, setLoader, roleType, setRoleType }}
+      value={{ user, setUser, setLoader, roleType, setRoleType, setSearchWord }}
     >
       <div className="app-container">
         <Navbar />
