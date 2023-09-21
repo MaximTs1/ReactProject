@@ -60,6 +60,12 @@ export default function App() {
       {/* Pass toggleDarkMode function */}
       <Router />
       {loader && <Loader />}
+      <div className="app-container">
+        <Navbar />
+        <Router />
+        {loader && <Loader />}
+      </div>
+      <LabelBottomNavigation />
     </GeneralContext.Provider>
   );
 }
