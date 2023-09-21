@@ -13,7 +13,6 @@ import { useContext, useState } from "react";
 import { GeneralContext } from "../App";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
-import { TOKEN } from "../config";
 
 const defaultTheme = createTheme();
 
@@ -196,7 +195,7 @@ export default function Account() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create Card
+            Update Info
           </Typography>
           <Box
             component="form"
@@ -231,11 +230,11 @@ export default function Account() {
               type="submit"
               fullWidth
               variant="contained"
+              onClick={() => navigate("/")}
               sx={{ mt: -2, mb: 3 }}
             >
-              Add Card
+              Confirm Update
             </Button>
-            <Grid container justifyContent="center"></Grid>
           </Box>
         </Box>
       </Container>

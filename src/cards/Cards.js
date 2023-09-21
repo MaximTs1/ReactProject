@@ -22,5 +22,6 @@ export default function Cards() {
         <Card key={crd.id} card={crd} />
       ))}
     </div>
+
   );
 }

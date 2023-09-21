@@ -1,11 +1,12 @@
 import { useState, createContext, useEffect } from "react";
 import "./App.css";
 import Router from "./Router";
-import Navbar, { RoleTypes } from "./components/Navbar";
+
+import Navbar from "./components/Navbar";
+import { RoleTypes } from "../src/components/Roles";
 import Loader from "./components/Loader";
 import LabelBottomNavigation from "./components/LabelBottomNavigation";
 // import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-
 
 export const GeneralContext = createContext();
 

@@ -1,6 +1,4 @@
 import { useState, useContext } from "react";
-// import { BsMoonFill, BsSunFill } from "react-icons/bs";
-// import { NavLink } from "react-router-dom";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Searchbar from "./Searchbar";
 import ToggleColorMode from "./ToggleColorMode";
@@ -19,17 +17,9 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { GeneralContext } from "../App";
+import { RoleTypes, checkPermissions } from "./Roles";
 
-export const RoleTypes = {
-  none: 0,
-  user: 1,
-  business: 2,
-  admin: 3,
-};
 
-export const checkPermissions = (permissions, userRoleType) => {
-  return permissions.includes(userRoleType);
-};
 
 const pages = [
   { route: "/about", title: "about" },
@@ -214,18 +204,6 @@ export default function Navbar() {
           </Box>
 
           <Searchbar />
-
-          {/* <Box>
-            <div className="navbar-end">
-              <label className="swap swap-rotate">
-                <input type="checkbox" onClick={onclick} />
-
-                <BsSunFill className="swap-on h-4 w-4" display={"none"} />
-
-                <BsMoonFill className="swap-off h-4 w-4" />
-              </label>
-            </div>
-          </Box> */}
 
           <ToggleColorMode />
 
