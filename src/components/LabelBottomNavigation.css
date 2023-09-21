@@ -4,17 +4,17 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #fff; /* Change the background color as needed */
+  background-color: white !important; /* Change the background color as needed */
   display: flex;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   /* Add any other styling you need */
 }
-
-  .custom-bottom-navigation {
     /* Set the background color to transparent (optional) */
+
+  /* .custom-bottom-navigation {
     background-color: transparent !important;
-  }
+  } */
   
   /* Override the icon color for both unselected and selected states */
   .custom-bottom-navigation .MuiBottomNavigationAction-root {
@@ -26,4 +26,3 @@
     background-color: transparent !important; /* Set the background color to transparent (optional) */
     color: grey !important; /* Set the same color for selected icons if needed */
   }
-  

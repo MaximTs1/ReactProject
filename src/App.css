@@ -29,3 +29,20 @@ body.dark-mode {
   background-color: #007bff;
   color: #fff;
 }
+.app-container {
+    position: relative;
+    min-height: 100vh; /* Ensure the container covers the entire viewport height */
+    margin-bottom: 56px; /* Adjust the margin value to match the height of your BottomNavigation */
+
+  }
+  /* Style for LabelBottomNavigation */
+  .LabelBottomNavigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff; /* Change the background color as needed */
+    /* You can customize padding, colors, or other styles here */
+    /* Example padding: 10px; */
+  }
+  

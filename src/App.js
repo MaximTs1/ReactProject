@@ -1,8 +1,11 @@
 import { useState, createContext, useEffect } from "react";
 import "./App.css"; // Import the CSS file
 import Router from "./Router";
-import Navbar, { RoleTypes } from "./components/Navbar";
+
+import Navbar from "./components/Navbar";
+import { RoleTypes } from "../src/components/Roles";
 import Loader from "./components/Loader";
+import LabelBottomNavigation from "./components/LabelBottomNavigation";
 
 export const GeneralContext = createContext();
 
@@ -11,6 +14,7 @@ export default function App() {
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
   const [darkMode, setDarkMode] = useState(false); // Dark mode state
+  const [searchWord, setSearchWord] = useState("");
 
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
@@ -54,7 +58,16 @@ export default function App() {
 
   return (
     <GeneralContext.Provider
-      value={{ user, setUser, setLoader, roleType, setRoleType, darkMode }} // Pass dark mode state to Navbar
+      value={{
+        user,
+        setUser,
+        setLoader,
+        roleType,
+        setRoleType,
+        darkMode,
+        setSearchWord,
+      }}
+      // Pass dark mode state to Navbar
     >
       <Navbar toggleDarkMode={toggleDarkMode} />{" "}
       {/* Pass toggleDarkMode function */}
