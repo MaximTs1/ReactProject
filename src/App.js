@@ -65,6 +65,7 @@ export default function App() {
         roleType,
         setRoleType,
         darkMode,
+        searchWord,
         setSearchWord,
       }}
       // Pass dark mode state to Navbar
@@ -73,11 +74,6 @@ export default function App() {
       {/* Pass toggleDarkMode function */}
       <Router />
       {loader && <Loader />}
-      <div className="app-container">
-        <Navbar />
-        <Router />
-        {loader && <Loader />}
-      </div>
       <LabelBottomNavigation />
     </GeneralContext.Provider>
   );

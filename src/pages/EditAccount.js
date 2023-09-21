@@ -241,62 +241,64 @@ export default function EditAccount({ item, itemChange }) {
       {item && (
         <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-              sx={{
-                marginTop: 8,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Edit Account
-              </Typography>
+            <form onSubmit={save}>
+              <CssBaseline />
               <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 3 }}
+                sx={{
+                  marginTop: 8,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                <Grid container spacing={2}>
-                  {structure.map((s) => (
-                    <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
-                      {s.type === "boolean" ? (
-                        <FormControlLabel
-                          name={s.name}
-                          control={<Switch color="primary" />}
-                          label={s.label}
-                          labelPlacement="start"
-                        />
-                      ) : (
-                        <TextField
-                          name={s.name}
-                          fullWidth
-                          id={s.name}
-                          label={s.label}
-                          type={s.type}
-                          value={formData[s.name]}
-                          onChange={handleInputChange}
-                        />
-                      )}
-                    </Grid>
-                  ))}
-                </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={save}
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Edit Account
+                </Typography>
+                <Box
+                  component="form"
+                  noValidate
+                  onSubmit={handleSubmit}
+                  sx={{ mt: 3 }}
                 >
-                  Save
-                </Button>
+                  <Grid container spacing={2}>
+                    {structure.map((s) => (
+                      <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
+                        {s.type === "boolean" ? (
+                          <FormControlLabel
+                            name={s.name}
+                            control={<Switch color="primary" />}
+                            label={s.label}
+                            labelPlacement="start"
+                          />
+                        ) : (
+                          <TextField
+                            name={s.name}
+                            fullWidth
+                            id={s.name}
+                            label={s.label}
+                            type={s.type}
+                            value={formData[s.name]}
+                            onChange={handleInputChange}
+                          />
+                        )}
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={save}
+                  >
+                    Save
+                  </Button>
+                </Box>
               </Box>
-            </Box>
+            </form>
           </Container>
         </ThemeProvider>
       )}
