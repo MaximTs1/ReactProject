@@ -1,12 +1,11 @@
 import { useState, createContext, useEffect } from "react";
-import "./App.css";
+import "./App.css"; // Import the CSS file
 import Router from "./Router";
 
 import Navbar from "./components/Navbar";
 import { RoleTypes } from "../src/components/Roles";
 import Loader from "./components/Loader";
 import LabelBottomNavigation from "./components/LabelBottomNavigation";
-// import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 export const GeneralContext = createContext();
 
@@ -14,9 +13,9 @@ export default function App() {
   const [user, setUser] = useState();
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
-  const [searchWord, setSearchWord] = useState('');
+  const [darkMode, setDarkMode] = useState(false); // Dark mode state
+  const [searchWord, setSearchWord] = useState("");
 
-  
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
       credentials: "include",
@@ -47,16 +46,34 @@ export default function App() {
       .finally(() => setLoader(false));
   }, []);
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode); // Toggle dark mode state
+    // Add a class to the body element to enable/disable dark mode
+    if (!darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  };
+
   return (
-    
     <GeneralContext.Provider
-      value={{ user, setUser, setLoader, roleType, setRoleType, setSearchWord }}
+      value={{
+        user,
+        setUser,
+        setLoader,
+        roleType,
+        setRoleType,
+        darkMode,
+        searchWord,
+        setSearchWord,
+      }}
+      // Pass dark mode state to Navbar
     >
-      <div className="app-container">
-        <Navbar />
-        <Router />
-        {loader && <Loader />}
-      </div>
+      <Navbar toggleDarkMode={toggleDarkMode} />{" "}
+      {/* Pass toggleDarkMode function */}
+      <Router />
+      {loader && <Loader />}
       <LabelBottomNavigation />
     </GeneralContext.Provider>
   );

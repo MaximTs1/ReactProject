@@ -3,7 +3,7 @@ import EditAccount from "../pages/EditAccount";
 
 export default function Account() {
   const [info, setInfo] = useState([]);
-  const [editedItem, setEditedItem] = useState(null); // Initialize with null
+  const [editedItem, setEditedItem] = useState(null);
 
   useEffect(() => {
     fetch("https://api.shipap.co.il/clients/login", {
@@ -12,12 +12,11 @@ export default function Account() {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setInfo(data); // If data is already an array, set it as is
+          setInfo(data);
         } else {
-          setInfo([data]); // If data is an object, wrap it in an array
+          setInfo([data]);
         }
 
-        // Set the editedItem to the first item in the info array
         setEditedItem(data);
       });
   }, []);
