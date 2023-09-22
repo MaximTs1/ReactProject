@@ -21,8 +21,8 @@ import { RoleTypes, checkPermissions } from "./Roles";
 
 const pages = [
   { route: "/about", title: "about" },
-  { route: "/login", title: "התחבר", permissions: [RoleTypes.none] },
-  { route: "/signup", title: "הרשמה", permissions: [RoleTypes.none] },
+  { route: "/login", title: "Log In", permissions: [RoleTypes.none] },
+  { route: "/signup", title: "Register", permissions: [RoleTypes.none] },
   {
     route: "/favorite",
     title: "fav cards",
