@@ -4,21 +4,20 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
-import CallIcon from "@mui/icons-material/Call";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import Typography from "@mui/material/Typography";
 import { GeneralContext } from "../App";
-import { Link } from "react-router-dom";
-import { search } from "../components/Searchbar"; // Import the search function
+import { Link, useNavigate } from "react-router-dom";
+import { search } from "../components/Searchbar";
 import "./Cards.css";
 
 export default function Cards() {
   const [cards, setCards] = useState([]);
-  const [favoriteCards, setFavoriteCards] = useState([]);
-  const [redHeart, setRedHeart] = useState(false);
-  const { setLoader, user, roleType, snackbar, searchWord } =
-    useContext(GeneralContext);
+  const { setLoader, user, roleType, searchWord } = useContext(GeneralContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoader(true);
@@ -46,41 +45,44 @@ export default function Cards() {
     )
       .then(() => {
         setCards(cards.filter((c) => c.id !== id));
-        snackbar("Card removed successfully");
       })
       .catch((err) => console.log(err))
       .finally(() => setLoader(false));
   };
 
-  const favorite = (id) => {
-    fetch(
-      `https://api.shipap.co.il/cards/${id}/favorite?token=9e7d1125-5381-11ee-becb-14dda9d4a5f0`,
-      {
-        credentials: "include",
-        method: "PUT",
-      }
-    ).then(() => {
-      setRedHeart(true);
-      setFavoriteCards(cards.filter((c) => c.id === id));
-      snackbar("Card added to favorites");
-    });
+  const toggleFavorite = (id) => {
+    setLoader(true);
+    const updatedCards = [...cards];
+    const cardIndex = updatedCards.findIndex((c) => c.id === id);
+
+    if (cardIndex !== -1) {
+      const isFavorite = updatedCards[cardIndex].favorite;
+
+      // Toggle the favorite status
+      updatedCards[cardIndex].favorite = !isFavorite;
+      setCards(updatedCards);
+
+      const method = isFavorite ? "unfavorite" : "favorite";
+
+      fetch(
+        `https://api.shipap.co.il/cards/${id}/${method}?token=9e7d1125-5381-11ee-becb-14dda9d4a5f0`,
+        {
+          credentials: "include",
+          method: "PUT",
+        }
+      )
+        .then(() => {})
+        .catch((err) => console.log(err))
+        .finally(() => setLoader(false));
+    }
   };
 
-  const unfavorite = (id) => {
-    setLoader(true);
-    fetch(
-      `https://api.shipap.co.il/cards/${id}/unfavorite?token=9e7d1125-5381-11ee-becb-14dda9d4a5f0`,
-      {
-        credentials: "include",
-        method: "PUT",
-      }
-    )
-      .then(() => {
-        setRedHeart(false);
-        setFavoriteCards(favoriteCards.filter((c) => c.id !== id));
-        snackbar("Card removed from favorites");
-      })
-      .finally(() => setLoader(false));
+  const navigateToEditCard = (id) => {
+    navigate(`/editCard`, { state: { cardId: id } });
+  };
+
+  const navigateToCardInfo = (id) => {
+    navigate(`/cardInfo`, { state: { idd: id } });
   };
 
   return (
@@ -111,6 +113,7 @@ export default function Cards() {
                 height="190"
                 image={c.imgUrl}
                 alt={c.imgAlt}
+                onClick={() => navigateToCardInfo(c.id)}
               />
               <CardContent>
                 <Typography
@@ -129,7 +132,7 @@ export default function Cards() {
                 <Typography style={{ marginTop: 20, fontSize: 16 }}>
                   <b>Phone:</b> {c.phone}
                   <br />
-                  <b>Adress:</b> {c.houseNumber} {c.street} <br /> {c.country},{" "}
+                  <b>Address:</b> {c.houseNumber} {c.street} <br /> {c.country},{" "}
                   {c.city} {c.zip} <br />
                   <b>Card Number:</b> 0000000{c.id}
                 </Typography>
@@ -141,30 +144,33 @@ export default function Cards() {
                   position: "relative",
                 }}
               >
+                {user && (
+                  <IconButton
+                    className="heart-icon"
+                    aria-label="add to favorites"
+                    onClick={() => toggleFavorite(c.id)}
+                  >
+                    <FavoriteBorderIcon
+                      style={{ color: c.favorite ? "red" : "grey" }}
+                    />
+                  </IconButton>
+                )}
                 {roleType === 3 && (
                   <IconButton
                     className="trash-icon"
-                    sx={{ position: "absolute", left: "5px" }}
+                    sx={{ position: "absolute", right: "5px" }}
                     onClick={() => adminRemoveCard(c.id)}
                     aria-label="delete"
                   >
                     <DeleteIcon style={{ color: "grey" }} />
                   </IconButton>
                 )}
-
-                {user && (
-                  <IconButton
-                    className="heart-icon"
-                    aria-label="add to favorites"
-                    onClick={() =>
-                      redHeart ? unfavorite(c.id) : favorite(c.id)
-                    }
-                  >
-                    <FavoriteIcon style={{ color: "grey" }} />
-                  </IconButton>
-                )}
-                <IconButton className="phone-icon" aria-label="call">
-                  <CallIcon style={{ color: "grey" }} />
+                <IconButton
+                  className="edit-icon"
+                  aria-label="edit"
+                  onClick={() => navigateToEditCard(c.id)}
+                >
+                  <EditIcon style={{ color: "orange" }} />
                 </IconButton>
               </CardActions>
             </Card>
@@ -172,7 +178,7 @@ export default function Cards() {
       </div>
       {user && (
         <button className="addCard">
-          <Link to={"/business/cards/new"}>+</Link>
+          <Link to={"/addcard"}>+</Link>
         </button>
       )}
     </div>
