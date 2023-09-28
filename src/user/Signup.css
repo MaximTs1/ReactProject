@@ -1,0 +1,18 @@
+.BackButton {
+    position:fixed ;
+    bottom: 100px;
+    right: 30px;
+    /* background-color: #1976d2; */
+    /* border-radius: 50%; */
+    border: none;
+    padding: 0;
+  }
+  .BackButton a {
+    color: white;
+    padding: 0px;
+    font-size: 45px;
+    text-decoration: none !important;
+    padding: 0;
+
+  }
+

@@ -12,11 +12,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { GeneralContext } from "../App";
 import { useContext } from "react";
 import { RoleTypes } from "../components/Roles";
+import "../user/Signup.css";
 
 const defaultTheme = createTheme();
 
 export default function Login() {
-  const { setUser, setLoader, setRoleType } = useContext(GeneralContext);
+  const { setUser, setLoader, setRoleType, snackbar  } = useContext(GeneralContext);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -48,17 +49,19 @@ export default function Login() {
       .then((data) => {
         setUser(data);
         setRoleType(RoleTypes.user);
+        snackbar(`${data.fullName} מחובר!`);
 
         if (data.business) {
           setRoleType(RoleTypes.business);
         } else if (data.admin) {
           setRoleType(RoleTypes.admin);
         }
-
+        
         navigate("/");
       })
       .catch((err) => {
-        alert(err.message);
+        // alert(err.message);
+           snackbar(err.message);
       })
       .finally(() => setLoader(false));
   };
@@ -122,6 +125,9 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
+        <button className="BackButton">
+          <Link to={"/"}>🔙</Link>
+        </button>
       </Container>
     </ThemeProvider>
   );

@@ -14,9 +14,13 @@ import { FormControlLabel } from "@mui/material";
 import { useContext } from "react";
 import { GeneralContext } from "../App";
 import Switch from "@mui/material/Switch";
+import {structure} from "./EditAccountStructure";
+import { useNavigate, Link } from "react-router-dom";
+import "../user/Signup.css";
 
 export default function EditAccount({ item, itemChange }) {
-  const { setLoader } = useContext(GeneralContext);
+  const { setLoader, snackbar } = useContext(GeneralContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id: 0,
     firstName: "",
@@ -35,107 +39,7 @@ export default function EditAccount({ item, itemChange }) {
     business: false,
     fullName: "",
   });
-  const structure = [
-    {
-      name: "firstName",
-      type: "text",
-      label: "First name",
-      required: true,
-      block: false,
-    },
-    {
-      name: "middleName",
-      type: "text",
-      label: "Middle name",
-      required: true,
-      block: false,
-    },
-    {
-      name: "lastName",
-      type: "text",
-      label: "Last name",
-      required: true,
-      block: false,
-    },
-    {
-      name: "phone",
-      type: "tel",
-      label: "phone",
-      required: true,
-      block: false,
-    },
-    {
-      name: "email",
-      type: "email",
-      label: "email",
-      required: true,
-      block: false,
-    },
-    {
-      name: "password",
-      type: "password",
-      label: "password",
-      required: true,
-      block: false,
-    },
-    {
-      name: "imgUrl",
-      type: "text",
-      label: "Img url",
-      required: true,
-      block: true,
-    },
-    {
-      name: "imgAlt",
-      type: "text",
-      label: "Img alt",
-      required: true,
-      block: false,
-    },
-    {
-      name: "state",
-      type: "text",
-      label: "state",
-      required: true,
-      block: false,
-    },
-    {
-      name: "country",
-      type: "text",
-      label: "country",
-      required: true,
-      block: false,
-    },
-    { name: "city", type: "text", label: "city", required: true, block: false },
-    {
-      name: "street",
-      type: "text",
-      label: "street",
-      required: true,
-      block: false,
-    },
-    {
-      name: "houseNumber",
-      type: "number",
-      label: "House number",
-      required: true,
-      block: false,
-    },
-    {
-      name: "zip",
-      type: "number",
-      label: "number",
-      required: true,
-      block: false,
-    },
-    {
-      name: "business",
-      type: "boolean",
-      label: "business",
-      required: true,
-      block: false,
-    },
-  ];
+  
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
@@ -209,6 +113,7 @@ export default function EditAccount({ item, itemChange }) {
 
   function save(ev) {
     ev.preventDefault();
+    setLoader(true);
 
     fetch(
       `https://api.shipap.co.il/clients/update?token=9e7d1125-5381-11ee-becb-14dda9d4a5f0`,
@@ -228,12 +133,22 @@ export default function EditAccount({ item, itemChange }) {
         return response.json();
       })
       .then((data) => {
-        console.log("Data saved successfully:", data);
         itemChange(formData);
-      })
+  
+  })
       .catch((error) => {
         console.error("Error saving data:", error);
+        // snackbar(error);
+
+      })
+      .finally(() => {
+        navigate("/");
+        snackbar(`Your data was saved successfully`); 
+        setLoader(false);
+
+
       });
+      
   }
 
   return (
@@ -300,6 +215,9 @@ export default function EditAccount({ item, itemChange }) {
               </Box>
             </form>
           </Container>
+          <button className="BackButton">
+          <Link to={"/"}>🔙</Link>
+        </button>
         </ThemeProvider>
       )}
     </>

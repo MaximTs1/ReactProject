@@ -16,7 +16,7 @@ export default function Account() {
         } else {
           setInfo([data]);
         }
-
+        
         setEditedItem(data);
       });
   }, []);

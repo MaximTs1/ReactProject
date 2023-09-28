@@ -1,11 +1,11 @@
 import { useState, createContext, useEffect } from "react";
 import "./App.css"; // Import the CSS file
 import Router from "./Router";
-
 import Navbar from "./components/Navbar";
 import { RoleTypes } from "../src/components/Roles";
 import Loader from "./components/Loader";
 import LabelBottomNavigation from "./components/LabelBottomNavigation";
+import Snackbar from "./components/Snackbar";
 
 export const GeneralContext = createContext();
 
@@ -15,6 +15,12 @@ export default function App() {
   const [roleType, setRoleType] = useState(RoleTypes.none);
   const [darkMode, setDarkMode] = useState(false); // Dark mode state
   const [searchWord, setSearchWord] = useState("");
+  const [snackbarText, setSnackbarText] = useState('');
+
+  const snackbar = text => {
+    setSnackbarText(text);
+    setTimeout(() => setSnackbarText(''), 3 * 1000);
+}
 
   useEffect(() => {
     fetch(`https://api.shipap.co.il/clients/login`, {
@@ -38,10 +44,14 @@ export default function App() {
         } else if (data.admin) {
           setRoleType(RoleTypes.admin);
         }
+        snackbar(`${data.fullName} מחובר!`);
+
       })
       .catch((err) => {
         setUser();
         setRoleType(RoleTypes.none);
+        snackbar(err.message);
+
       })
       .finally(() => setLoader(false));
   }, []);
@@ -67,6 +77,7 @@ export default function App() {
         darkMode,
         searchWord,
         setSearchWord,
+        snackbar
       }}
       // Pass dark mode state to Navbar
     >
@@ -75,6 +86,7 @@ export default function App() {
       <Router />
       {loader && <Loader />}
       <LabelBottomNavigation />
+      {snackbarText && <Snackbar text={snackbarText} />}
     </GeneralContext.Provider>
   );
 }

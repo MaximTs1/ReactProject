@@ -128,9 +128,9 @@
   color: red;
 }
 .Cards .addCard {
-  position: absolute;
+  position:fixed ;
   bottom: 100px;
-  right: 40px;
+  right: 30px;
   width: 60px;
   height: 60px;
   background-color: #1976d2;
@@ -139,7 +139,7 @@
 }
 .Cards .addCard a {
   color: white;
-  padding: 21px;
+  padding: 10px;
   font-size: 30px;
   text-decoration: none;
 }
