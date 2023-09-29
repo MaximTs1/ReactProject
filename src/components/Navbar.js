@@ -93,7 +93,7 @@ export default function Navbar({ toggleDarkMode }) {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <BadgeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <BadgeIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1, cursor: "pointer" }} onClick={() => navigate("/")} />
           <Typography
             variant="h6"
             noWrap
@@ -107,6 +107,7 @@ export default function Navbar({ toggleDarkMode }) {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: "pointer"
             }}
           >
             Bcard
@@ -222,7 +223,7 @@ export default function Navbar({ toggleDarkMode }) {
             <Box sx={{ flexGrow: 0, justifyContent: "flex-end" }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" src="../../public/220453.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu

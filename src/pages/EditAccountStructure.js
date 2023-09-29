@@ -69,7 +69,13 @@ export const structure = [
       required: true,
       block: false,
     },
-    { name: "city", type: "text", label: "city", required: true, block: false },
+    {
+      name: "city",
+      type: "text",
+      label: "city",
+      required: true,
+      block: false
+    },
     {
       name: "street",
       type: "text",

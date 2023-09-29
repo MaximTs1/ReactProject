@@ -9,10 +9,10 @@
 }
 
 .title {
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+    font-family: 'Pacifico', cursive !important;
+    margin-bottom: 0;
+    font-size: 48px;
+  }
 
 .subtitle {
   font-size: 20px;
@@ -28,8 +28,9 @@
 }
 
 .description {
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-family: 'Pacifico', cursive !important;
+  margin-bottom: 0;
+  font-size: 60px;
 }
 
 .info-label {
@@ -43,10 +44,19 @@
 
 .small-info {
   font-size: 16px;
-  color: #666;
+  color: #665;
   margin-bottom: 5px;
 }
 
 .space {
   margin-bottom: 20px;
+}
+
+.map {
+  max-width: 100%;
+  height: 300px; /* Adjust the height as per your preference */
+  width: 67%; /* Set the width to 100% to make it responsive */
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

@@ -22,6 +22,10 @@ export default function Cards() {
     navigate(`/editCard`, { state: { cardId: id } });
   };
 
+  const navigateToCardInfo = (id) => {
+    navigate(`/cardInfo`, { state: { idd: id } });
+  };
+
   useEffect(() => {
     setLoader(true);
     fetch(
@@ -90,6 +94,8 @@ export default function Cards() {
     }
   };
 
+
+
   return (
     <div className="Cards">
       <header>
@@ -105,6 +111,7 @@ export default function Cards() {
               mb: 5,
               boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.11)",
               borderRadius: "10px",
+              cursor: "pointer"
             }}
             key={c.title}
           >
@@ -113,6 +120,7 @@ export default function Cards() {
               height="190"
               image={c.imgUrl}
               alt={c.imgAlt}
+              onClick={() => navigateToCardInfo(c.id)}
             />
             <CardContent>
               <Typography
@@ -154,7 +162,8 @@ export default function Cards() {
                   />
                 </IconButton>
               )}
-              {roleType === 3 && (
+
+                {user && (roleType === 3 || user.id === c.clientId) ? (
                 <IconButton
                   className="trash-icon"
                   sx={{ position: "absolute", right: "5px" }}
@@ -163,7 +172,9 @@ export default function Cards() {
                 >
                   <DeleteIcon style={{ color: "grey" }} />
                 </IconButton>
-              )}
+              ) : null}
+
+              {user && (roleType === 3 || user.id === c.clientId) ? (
               <IconButton
                 className="edit-icon"
                 aria-label="edit"
@@ -171,6 +182,8 @@ export default function Cards() {
               >
                 <EditIcon style={{ color: "orange" }} />
               </IconButton>
+            ) : null}
+            
             </CardActions>
           </Card>
         ))}

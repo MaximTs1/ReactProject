@@ -13,6 +13,11 @@ import { GeneralContext } from "../App";
 import { useLocation, useNavigate, Link  } from "react-router-dom";
 import { structure } from "../pages/EditAccountStructure";
 import "../user/Signup.css";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import IconButton from "@mui/material/IconButton";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 export default function AdminEditUser() {
   const navigate = useNavigate();
@@ -40,7 +45,13 @@ export default function AdminEditUser() {
   const defaultTheme = createTheme();
   const location = useLocation();
   const accountId = location.state && location.state.accountId;
-  
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleBusinessChange = (event) => {
+    // Toggle the business value when the Switch is clicked
+    setAccount({ ...account, business: event.target.checked });
+  };
+
   console.log("accountId", accountId);
 
   
@@ -98,7 +109,6 @@ export default function AdminEditUser() {
       snackbar(`Account update was successfully changed`);
     });
   };
-
   return (
     <>
       {account && (
@@ -114,8 +124,9 @@ export default function AdminEditUser() {
                   alignaccounts: "center",
                 }}
               >
-                
-            
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                  <LockOutlinedIcon />
+                </Avatar>
                 <Typography component="h1" variant="h5">
                   Edit Account
                 </Typography>
@@ -130,11 +141,41 @@ export default function AdminEditUser() {
                       <Grid key={s.name} account xs={12} sm={s.block ? 12 : 6}>
                         {s.type === "boolean" ? (
                           <FormControlLabel
-                            name={s.name}
-                            control={<Switch color="primary" />}
+                          name={s.name}
+                          control={
+                            <Switch
+                              color="primary"
+                              checked={account.business}
+                              onChange={handleBusinessChange}
+                            />
+                          }
                             label={s.label}
                             labelPlacement="start"
                           />
+
+                          ) : s.name === "password" ? (
+                            <TextField
+                              fullWidth
+                              id="password"
+                              label="Password"
+                              type={showPassword ? "text" : "password"}
+                              value={account.password}
+                              onChange={handelInput}
+                              InputProps={{
+                                endAdornment: (
+                                  <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                  >
+                                    {showPassword ? (
+                                      <VisibilityOffIcon />
+                                    ) : (
+                                      <VisibilityIcon />
+                                    )}
+                                  </IconButton>
+                                ),
+                              }}
+                            />
                         ) : (
                           <TextField
                             name={s.name}
@@ -156,7 +197,7 @@ export default function AdminEditUser() {
                     sx={{ mt: 3, mb: 2 }}
                     onClick={updateAccount}
                   >
-                    updateAccount
+                    Update Account
                   </Button>
                 </Box>
               </Box>
@@ -170,75 +211,3 @@ export default function AdminEditUser() {
     </>
   );
 }
-
-
-// original bottom
-
-// return (
-//   <>
-//     {account && (
-//       <ThemeProvider theme={defaultTheme}>
-//         <form onSubmit={updateAccount}>
-//           <Container component="main" maxWidth="xs">
-//             <CssBaseline />
-//             <Box
-//               sx={{
-//                 marginTop: 8,
-//                 display: "flex",
-//                 flexDirection: "column",
-//                 alignItems: "center",
-//               }}
-//             >
-//               <Typography component="h1" variant="h5">
-//                 Edit Account
-//               </Typography>
-//             </Box>
-//             <form onSubmit={updateAccount}>
-//               <Box
-//                 component="div"
-//                 noValidate
-//                 onSubmit={handelInput}
-//                 sx={{ mt: 3 }}
-//               >
-//                 <Grid container spacing={2}>
-//                   {structure.map((s) => (
-//                     <Grid key={s.name} account xs={12} sm={s.block ? 12 : 6}>
-//                       {s.type === "boolean" ? (
-//                         <FormControlLabel
-//                           name={s.name}
-//                           control={<Switch color="primary" />}
-//                           label={s.label}
-//                           labelPlacement="start"
-//                         />
-//                       ) : (
-//                         <TextField
-//                           name={s.name}
-//                           fullWidth
-//                           id={s.name}
-//                           label={s.label}
-//                           type={s.type}
-//                           value={account[s.name]}
-//                           onChange={handelInput}
-//                         />
-//                       )}
-//                     </Grid>
-//                   ))}
-//                 </Grid>
-//                 <Button
-//                   type="submit"
-//                   fullWidth
-//                   variant="contained"
-//                   sx={{ mt: 3, mb: 2 }}
-//                   onClick={updateAccount}
-//                 >
-//                   Update 
-//                 </Button>
-//               </Box>
-//             </form>
-//           </Container>
-//         </form>
-//       </ThemeProvider>
-//     )}
-//   </>
-// );
-// }

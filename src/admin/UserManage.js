@@ -79,8 +79,6 @@ import { useNavigate } from 'react-router-dom';
 import { GeneralContext } from '../App';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import { Link } from 'react-router-dom'; 
-import './UserManage.css'; 
 
 
 

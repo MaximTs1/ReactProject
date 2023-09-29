@@ -18,6 +18,24 @@ export default function Cards() {
   const { setLoader, user, roleType, searchWord, snackbar } = useContext(GeneralContext);
 
   const navigate = useNavigate();
+  const [favoriteCards, setFavoriteCards] = useState([]); // Added for user's favorite cards
+
+  useEffect(() => {
+    setLoader(true);
+
+    // Fetch user's favorite cards
+    fetch(
+      `https://api.shipap.co.il/cards/favorite?token=9e7d1125-5381-11ee-becb-14dda9d4a5f0`,
+      {
+        credentials: "include",
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setFavoriteCards(data);
+      })
+      .finally(() => setLoader(false));
+  }, [searchWord, user]); // Update favorite cards when searchWord or user changes
 
   useEffect(() => {
     setLoader(true);
@@ -29,7 +47,7 @@ export default function Cards() {
         setCards(data);
       })
       .finally(() => setLoader(false));
-  }, [searchWord]); // Update cards when searchWord changes
+  }, [searchWord]);
 
   const adminRemoveCard = (id) => {
     if (!window.confirm("Are you sure you want to remove this card?")) {
@@ -46,8 +64,6 @@ export default function Cards() {
       .then(() => {
         setCards(cards.filter((c) => c.id !== id));
         snackbar('The card was deleted');
-
-
       })
       .catch((err) => console.log(err))
       .finally(() => setLoader(false));
@@ -75,11 +91,10 @@ export default function Cards() {
         }
       )
         .then(() => {
-          if(method === "favorite"){
-          snackbar('Card was added to favorite page');
-          }else{
+          if (method === "favorite") {
+            snackbar('Card was added to favorite page');
+          } else {
             snackbar('Card was removed from favorite page');
-
           }
         })
         .catch((err) => console.log(err))
@@ -94,7 +109,8 @@ export default function Cards() {
   const navigateToCardInfo = (id) => {
     navigate(`/cardInfo`, { state: { idd: id } });
   };
-
+console.log("favoriteCards: ", favoriteCards);
+console.log("cards: " , cards);
   return (
     <div className="Cards">
       <header>
@@ -161,11 +177,14 @@ export default function Cards() {
                     onClick={() => toggleFavorite(c.id)}
                   >
                     <FavoriteBorderIcon
-                      style={{ color: c.favorite ? "red" : "grey" }}
+                      style={{
+                        color: favoriteCards.includes(c.id) ? "red" : "grey", // Step 3
+                      }}
                     />
                   </IconButton>
                 )}
-                {roleType === 3 && (
+
+                {user && (roleType === 3 || user.id === c.clientId) ? (
                   <IconButton
                     className="trash-icon"
                     sx={{ position: "absolute", right: "5px" }}
@@ -174,16 +193,18 @@ export default function Cards() {
                   >
                     <DeleteIcon style={{ color: "grey" }} />
                   </IconButton>
-                )}
-                {roleType === 3 && (
-                <IconButton
-                  className="edit-icon"
-                  aria-label="edit"
-                  onClick={() => navigateToEditCard(c.id)}
-                >
-                  <EditIcon style={{ color: "orange" }} />
-                </IconButton>
-                )}
+                ) : null}
+
+                {user && (roleType === 3 || user.id === c.clientId) ? (
+                  <IconButton
+                    className="edit-icon"
+                    aria-label="edit"
+                    onClick={() => navigateToEditCard(c.id)}
+                  >
+                    <EditIcon style={{ color: "orange" }} />
+                  </IconButton>
+                ) : null}
+                
               </CardActions>
             </Card>
           ))}

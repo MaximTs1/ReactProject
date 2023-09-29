@@ -14,12 +14,16 @@ import "./Cards.css";
 
 export default function Cards() {
   const [cards, setCards] = useState([]);
-  const { setLoader, user, roleType } = useContext(GeneralContext);
+  const { setLoader, user, roleType, snackbar } = useContext(GeneralContext);
 
   const navigate = useNavigate();
 
   const navigateToEditCard = (id) => {
     navigate(`/editCard`, { state: { cardId: id } });
+  };
+
+  const navigateToCardInfo = (id) => {
+    navigate(`/cardInfo`, { state: { idd: id } });
   };
 
   useEffect(() => {
@@ -34,6 +38,7 @@ export default function Cards() {
       .then((data) => {
         setCards(data);
       })
+      
       .finally(() => setLoader(false));
   }, []);
 
@@ -78,7 +83,7 @@ export default function Cards() {
         }
       )
         .then(() => {
-          // snackbar(`Card ${method === 'favorite' ? 'added to' : 'removed from'} favorites`);
+          snackbar(`Card ${method === 'favorite' ? 'added to' : 'removed from'} favorites`);
           if (method === "unfavorite") {
             // Reload the page after unfavorite
             window.location.reload();
@@ -88,6 +93,8 @@ export default function Cards() {
         .finally(() => setLoader(false));
     }
   };
+
+
 
   return (
     <div className="Cards">
@@ -104,6 +111,7 @@ export default function Cards() {
               mb: 5,
               boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.11)",
               borderRadius: "10px",
+              cursor: "pointer"
             }}
             key={c.title}
           >
@@ -112,6 +120,7 @@ export default function Cards() {
               height="190"
               image={c.imgUrl}
               alt={c.imgAlt}
+              onClick={() => navigateToCardInfo(c.id)}
             />
             <CardContent>
               <Typography
@@ -153,8 +162,8 @@ export default function Cards() {
                   />
                 </IconButton>
               )}
-              {roleType === 3 && (
-                <IconButton
+              
+              {user && (roleType === 3 || user.id === c.clientId) ? (                <IconButton
                   className="trash-icon"
                   sx={{ position: "absolute", right: "5px" }}
                   onClick={() => adminRemoveCard(c.id)}
@@ -162,14 +171,18 @@ export default function Cards() {
                 >
                   <DeleteIcon style={{ color: "grey" }} />
                 </IconButton>
-              )}
-              <IconButton
-                className="edit-icon"
-                aria-label="edit"
-                onClick={() => navigateToEditCard(c.id)}
-              >
-                <EditIcon style={{ color: "orange" }} />
-              </IconButton>
+              ) : null}
+
+                {user && (roleType === 3 || user.id === c.clientId) ? (
+                <IconButton
+                  className="edit-icon"
+                  aria-label="edit"
+                  onClick={() => navigateToEditCard(c.id)}
+                >
+                  <EditIcon style={{ color: "orange" }} />
+                </IconButton>
+              ) : null}
+
             </CardActions>
           </Card>
         ))}

@@ -546,8 +546,7 @@ import { GeneralContext } from "../App";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
 import { TOKEN } from "../config";
-import Joi, { number } from "joi";
-import {structure, signupSchema, pattern} from "./SignupStructure";
+import {structure, signupSchema} from "./SignupStructure";
 import "./Signup.css";
 
 const defaultTheme = createTheme();
@@ -594,8 +593,10 @@ export default function Signup() {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
-
-
+  const handleBusinessChange = (event) => {
+    // Toggle the business value when the Switch is clicked
+    setFormData({ ...formData, business: event.target.checked });
+  };
 
 //option 3 not the best, need some work
 
@@ -682,16 +683,22 @@ export default function Signup() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              {structure.map((s) => (
-                <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
-                  {s.type === "boolean" ? (
-                    <FormControlLabel
-                      name={s.name}
-                      control={<Switch color="primary" />}
-                      label={s.label}
-                      labelPlacement="start"
-                    />
-                  ) : (
+            {structure.map((s) => (
+                      <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
+                        {s.type === "boolean" ? (
+                          <FormControlLabel
+                            name={s.name}
+                            control={
+                              <Switch
+                                color="primary"
+                                checked={formData.business}
+                                onChange={handleBusinessChange}
+                              />
+                            }
+                            label={s.label}
+                            labelPlacement="start"
+                          />
+                        ) : (
                     <TextField
                       name={s.name}
                       required={s.required}

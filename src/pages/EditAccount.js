@@ -16,6 +16,9 @@ import { GeneralContext } from "../App";
 import Switch from "@mui/material/Switch";
 import {structure} from "./EditAccountStructure";
 import { useNavigate, Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import "../user/Signup.css";
 
 export default function EditAccount({ item, itemChange }) {
@@ -78,12 +81,20 @@ export default function EditAccount({ item, itemChange }) {
     fullName: Joi.string().min(3).required(),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     if (item) {
       setFormData(item);
     }
   }, [item]);
 
+  
+  const handleBusinessChange = (event) => {
+    // Toggle the business value when the Switch is clicked
+    setFormData({ ...formData, business: event.target.checked });
+  };
+    
   const handleInputChange = (ev) => {
     const { id, value } = ev.target;
 
@@ -183,11 +194,41 @@ export default function EditAccount({ item, itemChange }) {
                       <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
                         {s.type === "boolean" ? (
                           <FormControlLabel
-                            name={s.name}
-                            control={<Switch color="primary" />}
+                          name={s.name}
+                          control={
+                            <Switch
+                              color="primary"
+                              checked={formData.business}
+                              onChange={handleBusinessChange}
+                            />
+                          }
                             label={s.label}
                             labelPlacement="start"
                           />
+
+                          ) : s.name === "password" ? (
+                            <TextField
+                              fullWidth
+                              id="password"
+                              label="Password"
+                              type={showPassword ? "text" : "password"}
+                              value={formData.password}
+                              onChange={handleInputChange}
+                              InputProps={{
+                                endAdornment: (
+                                  <IconButton
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    edge="end"
+                                  >
+                                    {showPassword ? (
+                                      <VisibilityOffIcon />
+                                    ) : (
+                                      <VisibilityIcon />
+                                    )}
+                                  </IconButton>
+                                ),
+                              }}
+                            />
                         ) : (
                           <TextField
                             name={s.name}
