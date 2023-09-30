@@ -97,14 +97,17 @@ export default function Cards() {
             ? favoriteCards.filter((card) => card.id !== id)
             : [...favoriteCards, updatedCards[cardIndex]];
           setFavoriteCards(updatedFavoriteCards);
-
           if (method === "favorite") {
             snackbar("Card was added to favorite page");
           } else {
             snackbar("Card was removed from favorite page");
           }
         })
-        .finally(() => setLoader(false));
+        .finally(() => {
+          setLoader(false);
+          window.location.reload();
+        });
+        
     }
   };
 

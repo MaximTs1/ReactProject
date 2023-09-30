@@ -19,6 +19,7 @@ import { useNavigate, Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import "../Style/Spinner.css";
 import "../user/Signup.css";
 
 export default function EditAccount({ item, itemChange }) {
@@ -194,6 +195,8 @@ export default function EditAccount({ item, itemChange }) {
                               label="Password"
                               type={showPassword ? "text" : "password"}
                               value={formData.password}
+                              // value={formData[s.name]}
+                              error={!!errors[s.name]}
                               onChange={handleInputChange}
                               InputProps={{
                                 endAdornment: (
@@ -226,6 +229,16 @@ export default function EditAccount({ item, itemChange }) {
                       </Grid>
                     ))}
                   </Grid>
+
+                  <Button 
+                    className={`spinner-button ${isValid ? 'valid' : ''}`} 
+                    disabled={!isValid} 
+                    display={!isValid} 
+                    style={{ display: isValid ? 'none' : '' }}>
+                    <span className="spinner"></span>
+                    {isValid ? 'Valid' : 'Finish the required fields...'}
+                  </Button>
+
                   <Button
                     type="submit"
                     fullWidth

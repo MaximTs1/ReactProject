@@ -13,8 +13,6 @@ import { GeneralContext } from "../App";
 import { useLocation, useNavigate, Link  } from "react-router-dom";
 import { structure, AccountSchema } from "../pages/EditAccountStructure";
 import "../user/Signup.css";
-import Avatar from "@mui/material/Avatar";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -49,7 +47,6 @@ export default function AdminEditUser() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleBusinessChange = (event) => {
-    // Toggle the business value when the Switch is clicked
     setFormData({ ...formData, business: event.target.checked });
   };
   
@@ -75,10 +72,6 @@ export default function AdminEditUser() {
       })
       .finally(() => setLoader(false));
   }, [accountId, setLoader]);
-
-
-
-
  
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -144,9 +137,7 @@ export default function AdminEditUser() {
                   alignaccounts: "center",
                 }}
               >
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                  <LockOutlinedIcon />
-                </Avatar>
+                
                 <Typography component="h1" variant="h5">
                   Edit Account
                 </Typography>
@@ -180,6 +171,8 @@ export default function AdminEditUser() {
                               label="Password"
                               type={showPassword ? "text" : "password"}
                               value={formData.password}
+                              error={!!errors[s.name]}
+                              helperText={errors[s.name] || ''}
                               onChange={handleInputChange}
                               InputProps={{
                                 endAdornment: (
@@ -218,7 +211,7 @@ export default function AdminEditUser() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={updateAccount}
-                    disabled={!isValid}
+                    // disabled={!isValid}
                   >
                     Update Account
                   </Button>

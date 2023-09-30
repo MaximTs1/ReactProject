@@ -14,8 +14,8 @@ import { GeneralContext } from "../App";
 import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
 import { TOKEN } from "../config";
-import Joi from "joi";
-import {structure, cardSchema} from "./AddCardStructure"
+import {structure, cardSchema} from "./AddCardStructure";
+import "../Style/Spinner.css";
 
 const defaultTheme = createTheme();
 
@@ -144,6 +144,16 @@ export default function AddCard() {
                 </Grid>
               ))}
             </Grid>
+
+            <Button 
+              className={`spinner-button ${isValid ? 'valid' : ''}`} 
+              disabled={!isValid} 
+              display={!isValid} 
+              style={{ display: isValid ? 'none' : '' }}>
+              <span className="spinner"></span>
+              {isValid ? 'Valid' : 'Finish the required fields...'}
+            </Button>
+
             <Button
               type="submit"
               fullWidth

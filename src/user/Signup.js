@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,6 +15,7 @@ import Switch from "@mui/material/Switch";
 import { FormControlLabel } from "@mui/material";
 import { TOKEN } from "../config";
 import {structure, signupSchema} from "./SignupStructure";
+import "../Style/Spinner.css";
 import "./Signup.css";
 
 const defaultTheme = createTheme();
@@ -43,7 +44,6 @@ export default function Signup() {
 
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
-
   const handleBusinessChange = (event) => {
     setFormData({ ...formData, business: event.target.checked });
   };
@@ -164,6 +164,14 @@ export default function Signup() {
                 </Grid>
               ))}
             </Grid>
+            <Button 
+              className={`spinner-button ${isValid ? 'valid' : ''}`} 
+              disabled={!isValid} 
+              display={!isValid} 
+              style={{ display: isValid ? 'none' : '' }}>
+              <span className="spinner"></span>
+              {isValid ? 'Valid' : 'Finish the required field...'}
+            </Button>
             <Button
               type="submit"
               fullWidth

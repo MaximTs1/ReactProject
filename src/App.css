@@ -5,6 +5,11 @@ body {
 
 form{
   line-height: 4.5 !important;
+  text-align: center;
+}
+
+h1{
+  text-align: center;
 }
 
 .navbar {

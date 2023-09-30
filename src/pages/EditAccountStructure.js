@@ -109,6 +109,8 @@ export const structure = [
     },
   ];
 
+  export const pattern = new RegExp("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!#.])[A-Za-z\\d$@$!%*?&.]{8,20}");
+
   export const AccountSchema = Joi.object({
     firstName: Joi.string().min(3).max(50).required(),
     middleName: Joi.string().min(3).max(50).required(),
@@ -117,6 +119,11 @@ export const structure = [
       .length(10)
       .pattern(/^[0-9]+$/)
       .required(),
+    password: Joi.string()
+    .regex(pattern)
+    .required()
+    .min(8)
+    .max(20),
     email: Joi.string().email({ tlds: { allow: false } }),
     imgUrl: Joi.string().min(3).required(),
     imgAlt: Joi.string().min(3).required(),

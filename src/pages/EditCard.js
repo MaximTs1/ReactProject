@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import { GeneralContext } from "../App";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { structure, cardSchema } from "./AddCardStructure";
+import "../Style/Spinner.css";
 import "../user/Signup.css";
 
 const API_ENDPOINT = "https://api.shipap.co.il/cards";
@@ -171,6 +172,16 @@ export default function EditCard() {
                       </Grid>
                     ))}
                   </Grid>
+
+                  <Button 
+                    className={`spinner-button ${isValid ? 'valid' : ''}`} 
+                    disabled={!isValid} 
+                    display={!isValid} 
+                    style={{ display: isValid ? 'none' : '' }}>
+                    <span className="spinner"></span>
+                    {isValid ? 'Valid' : 'Finish the required fields...'}
+                  </Button>
+
                   <Button
                     type="submit"
                     fullWidth
