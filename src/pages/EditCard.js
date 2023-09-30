@@ -64,21 +64,6 @@ export default function EditCard() {
       .finally(() => setLoader(false));
   }, [cardId, setLoader]);
 
-
-
-
-
-
-
-  // const handleInputChange = (ev) => {
-  //   const { name, value } = ev.target;
-
-  //   setFormData({
-  //     ...formData,
-  //     [name]: value,
-  //   });
-  // };
-
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
@@ -105,15 +90,6 @@ export default function EditCard() {
     setIsValid(!Object.keys(newErrors).length);
   };
   
-
-
-
-
-
-
-
-
-
   const updateCard = (ev) => {
     console.log("formData: ", formData);
 
