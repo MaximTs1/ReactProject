@@ -38,7 +38,7 @@ export default function Signup() {
     street: "",
     houseNumber: 0,
     zip: 0,
-    buisness: false,
+    business: false,
   });
 
   const [errors, setErrors] = useState({});
