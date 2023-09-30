@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -15,10 +16,11 @@ import "./Cards.css";
 
 export default function Cards() {
   const [cards, setCards] = useState([]);
-  const { setLoader, user, roleType, searchWord, snackbar } = useContext(GeneralContext);
+  const [favoriteCards, setFavoriteCards] = useState([]);
+  const { setLoader, user, roleType, searchWord, snackbar } =
+    useContext(GeneralContext);
 
   const navigate = useNavigate();
-  const [favoriteCards, setFavoriteCards] = useState([]); // Added for user's favorite cards
 
   useEffect(() => {
     setLoader(true);
@@ -33,9 +35,13 @@ export default function Cards() {
       .then((res) => res.json())
       .then((data) => {
         setFavoriteCards(data);
+        setLoader(false);
       })
-      .finally(() => setLoader(false));
-  }, [searchWord, user]); // Update favorite cards when searchWord or user changes
+      .catch((error) => {
+        console.error("Error fetching favorite cards:", error);
+        setLoader(false);
+      });
+  }, [searchWord, user, setLoader]);
 
   useEffect(() => {
     setLoader(true);
@@ -47,7 +53,7 @@ export default function Cards() {
         setCards(data);
       })
       .finally(() => setLoader(false));
-  }, [searchWord]);
+  }, [searchWord]); // Update cards when searchWord changes
 
   const adminRemoveCard = (id) => {
     if (!window.confirm("Are you sure you want to remove this card?")) {
@@ -63,7 +69,7 @@ export default function Cards() {
     )
       .then(() => {
         setCards(cards.filter((c) => c.id !== id));
-        snackbar('The card was deleted');
+        snackbar("The card was deleted");
       })
       .catch((err) => console.log(err))
       .finally(() => setLoader(false));
@@ -91,10 +97,16 @@ export default function Cards() {
         }
       )
         .then(() => {
+          // Update favoriteCards state after successful API call
+          const updatedFavoriteCards = isFavorite
+            ? favoriteCards.filter((card) => card.id !== id)
+            : [...favoriteCards, updatedCards[cardIndex]];
+          setFavoriteCards(updatedFavoriteCards);
+
           if (method === "favorite") {
-            snackbar('Card was added to favorite page');
+            snackbar("Card was added to favorite page");
           } else {
-            snackbar('Card was removed from favorite page');
+            snackbar("Card was removed from favorite page");
           }
         })
         .catch((err) => console.log(err))
@@ -109,8 +121,7 @@ export default function Cards() {
   const navigateToCardInfo = (id) => {
     navigate(`/cardInfo`, { state: { idd: id } });
   };
-console.log("favoriteCards: ", favoriteCards);
-console.log("cards: " , cards);
+
   return (
     <div className="Cards">
       <header>
@@ -131,6 +142,7 @@ console.log("cards: " , cards);
                 mb: 5,
                 boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.11)",
                 borderRadius: "10px",
+                cursor: "pointer"
               }}
               key={c.title}
             >
@@ -178,7 +190,9 @@ console.log("cards: " , cards);
                   >
                     <FavoriteBorderIcon
                       style={{
-                        color: favoriteCards.includes(c.id) ? "red" : "grey", // Step 3
+                        color: favoriteCards.some((card) => card.id === c.id)
+                          ? "red"
+                          : "grey",
                       }}
                     />
                   </IconButton>
@@ -209,11 +223,12 @@ console.log("cards: " , cards);
             </Card>
           ))}
       </div>
-      {user && (
+      {user && (roleType === 3 || roleType === 2) ? (
+
         <button className="addCard">
           <Link to={"/addcard"}>+</Link>
         </button>
-      )}
+      ) : null}
     </div>
   );
 }

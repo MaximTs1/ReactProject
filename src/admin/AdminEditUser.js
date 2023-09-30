@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { GeneralContext } from "../App";
 import { useLocation, useNavigate, Link  } from "react-router-dom";
-import { structure } from "../pages/EditAccountStructure";
+import { structure, AccountSchema } from "../pages/EditAccountStructure";
 import "../user/Signup.css";
 import Avatar from "@mui/material/Avatar";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -19,10 +19,11 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
+
 export default function AdminEditUser() {
   const navigate = useNavigate();
 
-  const [account, setAccount] = useState({
+  const [formData, setFormData] = useState({
       id: 0,
       firstName: "",
       middleName: "",
@@ -49,7 +50,7 @@ export default function AdminEditUser() {
 
   const handleBusinessChange = (event) => {
     // Toggle the business value when the Switch is clicked
-    setAccount({ ...account, business: event.target.checked });
+    setFormData({ ...formData, business: event.target.checked });
   };
 
   console.log("accountId", accountId);
@@ -71,7 +72,7 @@ export default function AdminEditUser() {
       })
       .then((data) => {
       console.log(data);
-      setAccount(data.find((user) => user.id === accountId));
+      setFormData(data.find((user) => user.id === accountId));
   })
   
       .catch((error) => {
@@ -80,14 +81,38 @@ export default function AdminEditUser() {
       .finally(() => setLoader(false));
   }, [accountId, setLoader]);
 
-  const handelInput = (ev) => {
-    const { name, value } = ev.target;
 
-    setAccount({
-      ...account,
-      [name]: value,
+
+
+ 
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
+
+  const handleInputChange = (ev) => {
+    const { id, value } = ev.target;
+
+    const AccountData = {
+      ...formData,
+      [id]: value,
+    };
+
+    setFormData(AccountData);
+
+    const validationResults = AccountSchema.validate(AccountData, {
+      abortEarly: true,
+      allowUnknown: true,
     });
+  
+    const newErrors = {};
+    validationResults.error?.details.forEach((error) => {
+      newErrors[error.path[0]] = error.message;
+    });
+  
+    setErrors(newErrors);
+    setIsValid(!Object.keys(newErrors).length);
+
   };
+
 
   const updateAccount = (ev) => {
 
@@ -100,7 +125,7 @@ export default function AdminEditUser() {
         credentials: "include",
         method: "PUT",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify(account),
+        body: JSON.stringify(formData),
       }
     )
     .finally(() => {
@@ -111,7 +136,7 @@ export default function AdminEditUser() {
   };
   return (
     <>
-      {account && (
+      {formData && (
         <ThemeProvider theme={defaultTheme}>
           <Container component="main" maxWidth="xs">
             <form onSubmit={updateAccount}>
@@ -133,19 +158,19 @@ export default function AdminEditUser() {
                 <Box
                   component="form"
                   noValidate
-                  onSubmit={handelInput}
-                  sx={{ mt: 3 }}
+                  onSubmit={handleInputChange}
+                  sx={{ mt: 3, mb: 3 }}
                 >
                   <Grid container spacing={2}>
                     {structure.map((s) => (
-                      <Grid key={s.name} account xs={12} sm={s.block ? 12 : 6}>
+                      <Grid key={s.name} formData xs={12} sm={s.block ? 12 : 6}>
                         {s.type === "boolean" ? (
                           <FormControlLabel
                           name={s.name}
                           control={
                             <Switch
                               color="primary"
-                              checked={account.business}
+                              checked={formData.business}
                               onChange={handleBusinessChange}
                             />
                           }
@@ -159,8 +184,8 @@ export default function AdminEditUser() {
                               id="password"
                               label="Password"
                               type={showPassword ? "text" : "password"}
-                              value={account.password}
-                              onChange={handelInput}
+                              value={formData.password}
+                              onChange={handleInputChange}
                               InputProps={{
                                 endAdornment: (
                                   <IconButton
@@ -183,8 +208,10 @@ export default function AdminEditUser() {
                             id={s.name}
                             label={s.label}
                             type={s.type}
-                            value={account[s.name]}
-                            onChange={handelInput}
+                            value={formData[s.name]}
+                            error={!!errors[s.name]}
+                            helperText={errors[s.name] || ''}
+                            onChange={handleInputChange}
                           />
                         )}
                       </Grid>
@@ -196,6 +223,7 @@ export default function AdminEditUser() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={updateAccount}
+                    disabled={!isValid}
                   >
                     Update Account
                   </Button>

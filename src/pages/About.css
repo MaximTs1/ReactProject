@@ -1,0 +1,21 @@
+/* You can style the About page as you prefer. Here's a simple example. */
+
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 28px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #665;
+  }
+  
+  /* Add more CSS rules to customize the appearance further */
+  

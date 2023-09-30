@@ -187,11 +187,6 @@ export default function Cards() {
           </Card>
         ))}
       </div>
-      {user && (
-        <button className="addCard">
-          <Link to={"/addcard"}>+</Link>
-        </button>
-      )}
     </div>
   );
 }

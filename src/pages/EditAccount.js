@@ -14,7 +14,7 @@ import { FormControlLabel } from "@mui/material";
 import { useContext } from "react";
 import { GeneralContext } from "../App";
 import Switch from "@mui/material/Switch";
-import {structure} from "./EditAccountStructure";
+import {structure, AccountSchema} from "./EditAccountStructure";
 import { useNavigate, Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -60,26 +60,8 @@ export default function EditAccount({ item, itemChange }) {
     setLoader(true);
   };
 
-  const [errors, setErrors] = useState({});
   const defaultTheme = createTheme();
-  const accountSchema = Joi.object({
-    id: Joi.number().required(),
-    firstName: Joi.string().min(3).required(),
-    middleName: Joi.string().min(3).required(),
-    lastName: Joi.string().min(3).required(),
-    phone: Joi.string().min(3).required(),
-    email: Joi.string().min(3).required(),
-    imgUrl: Joi.string().min(3).required(),
-    imgAlt: Joi.string().min(3).required(),
-    state: Joi.string().min(3).required(),
-    country: Joi.string().min(3).required(),
-    city: Joi.string().min(3).required(),
-    street: Joi.string().min(3).required(),
-    houseNumber: Joi.number().required(),
-    zip: Joi.number().required(),
-    business: Joi.boolean().required(),
-    fullName: Joi.string().min(3).required(),
-  });
+
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -95,31 +77,32 @@ export default function EditAccount({ item, itemChange }) {
     setFormData({ ...formData, business: event.target.checked });
   };
     
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
+
   const handleInputChange = (ev) => {
     const { id, value } = ev.target;
 
-    const obj = {
+    const AccountData = {
       ...formData,
       [id]: value,
     };
 
-    const schema = accountSchema.validate(obj, {
-      abortEarly: false,
-      messages: {},
-      errors: { language: "english" },
+    setFormData(AccountData);
+
+    const validationResults = AccountSchema.validate(AccountData, {
+      abortEarly: true,
+      allowUnknown: true,
     });
-    const err = { ...errors, [id]: undefined };
+  
+    const newErrors = {};
+    validationResults.error?.details.forEach((error) => {
+      newErrors[error.path[0]] = error.message;
+    });
+  
+    setErrors(newErrors);
+    setIsValid(!Object.keys(newErrors).length);
 
-    if (schema.error) {
-      const error = schema.error.details.find((e) => e.context.key === id);
-
-      if (error) {
-        err[id] = error.message;
-      }
-    }
-
-    setFormData(obj);
-    setErrors(err);
   };
 
   function save(ev) {
@@ -156,8 +139,7 @@ export default function EditAccount({ item, itemChange }) {
         navigate("/");
         snackbar(`Your data was saved successfully`); 
         setLoader(false);
-
-
+        window.location.reload();
       });
       
   }
@@ -237,6 +219,8 @@ export default function EditAccount({ item, itemChange }) {
                             label={s.label}
                             type={s.type}
                             value={formData[s.name]}
+                            error={!!errors[s.name]}
+                            helperText={errors[s.name] || ''}
                             onChange={handleInputChange}
                           />
                         )}
@@ -249,6 +233,7 @@ export default function EditAccount({ item, itemChange }) {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                     onClick={save}
+                    disabled={!isValid}
                   >
                     Save
                   </Button>

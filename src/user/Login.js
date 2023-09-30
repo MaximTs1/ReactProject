@@ -10,15 +10,22 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, useNavigate } from "react-router-dom";
 import { GeneralContext } from "../App";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { RoleTypes } from "../components/Roles";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import "../user/Signup.css";
 
 const defaultTheme = createTheme();
 
+
 export default function Login() {
   const { setUser, setLoader, setRoleType, snackbar  } = useContext(GeneralContext);
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -60,7 +67,6 @@ export default function Login() {
         navigate("/");
       })
       .catch((err) => {
-        // alert(err.message);
            snackbar(err.message);
       })
       .finally(() => setLoader(false));
@@ -106,9 +112,23 @@ export default function Login() {
               fullWidth
               name="password"
               label="סיסמה"
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? (
+                      <VisibilityOffIcon />
+                    ) : (
+                      <VisibilityIcon />
+                    )}
+                  </IconButton>
+                ),
+              }}
             />
             <Button
               type="submit"

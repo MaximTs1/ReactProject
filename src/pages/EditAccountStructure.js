@@ -1,3 +1,6 @@
+import Joi from "joi";
+
+
 export const structure = [
     {
       name: "firstName",
@@ -105,3 +108,25 @@ export const structure = [
       block: false,
     },
   ];
+
+
+  export const AccountSchema = Joi.object({
+    firstName: Joi.string().min(3).max(50).required(),
+    middleName: Joi.string().min(3).max(50).required(),
+    lastName: Joi.string().min(3).max(50).required(),
+    phone: Joi.string()
+      .length(10)
+      .pattern(/^[0-9]+$/)
+      .required(),
+    email: Joi.string().email({ tlds: { allow: false } }),
+    imgUrl: Joi.string().min(3).required(),
+    imgAlt: Joi.string().min(3).required(),
+    state: Joi.string().min(3).required(),
+    country: Joi.string().min(3).required(),
+    city: Joi.string().min(3).required(),
+    street: Joi.string().min(3).required(),
+    houseNumber: Joi.number().required(),
+    zip: Joi.number().required(),
+    business: Joi.boolean().required(),
+    fullName: Joi.string().min(3).required(),
+  });

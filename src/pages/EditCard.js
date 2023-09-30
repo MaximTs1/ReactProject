@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { GeneralContext } from "../App";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { structure } from "./AddCardStructure";
+import { structure, cardSchema } from "./AddCardStructure";
 import "../user/Signup.css";
 
 // Constants for API endpoint and token
@@ -21,7 +21,7 @@ const API_TOKEN = "9e7d1125-5381-11ee-becb-14dda9d4a5f0";
 export default function EditCard() {
   const navigate = useNavigate();
 
-  const [item, setItem] = useState({
+  const [formData, setFormData] = useState({
     id: 0,
     title: "",
     description: "",
@@ -45,7 +45,6 @@ export default function EditCard() {
   const cardId = location.state && location.state.cardId;
 
   useEffect(() => {
-
     
     setLoader(true);
 
@@ -58,24 +57,65 @@ export default function EditCard() {
         }
         return res.json();
       })
-      .then((data) => setItem(data))
+      .then((data) => setFormData(data))
       .catch((error) => {
         console.error("Error fetching data:", error);
       })
       .finally(() => setLoader(false));
   }, [cardId, setLoader]);
 
-  const handelInput = (ev) => {
-    const { name, value } = ev.target;
 
-    setItem({
-      ...item,
+
+
+
+
+
+  // const handleInputChange = (ev) => {
+  //   const { name, value } = ev.target;
+
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
+
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
+
+  const handleInputChange = (ev) => {
+    const { name, value } = ev.target;
+    const cardData = {
+      ...formData,
       [name]: value,
+    };
+  
+    setFormData(cardData);
+  
+    const validationResults = cardSchema.validate(cardData, {
+      abortEarly: true,
+      allowUnknown: true,
     });
+  
+    const newErrors = {};
+    validationResults.error?.details.forEach((error) => {
+      newErrors[error.path[0]] = error.message;
+    });
+  
+    setErrors(newErrors);
+    setIsValid(!Object.keys(newErrors).length);
   };
+  
+
+
+
+
+
+
+
+
 
   const updateCard = (ev) => {
-    console.log("item: ", item);
+    console.log("formData: ", formData);
 
     ev.preventDefault();
     setLoader(true);
@@ -86,7 +126,7 @@ export default function EditCard() {
         credentials: "include",
         method:"PUT",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify(item),
+        body: JSON.stringify(formData),
       }
     )
     .then((response) => {
@@ -107,7 +147,7 @@ export default function EditCard() {
 
   return (
     <>
-      {item && (
+      {formData && (
         <ThemeProvider theme={defaultTheme}>
           <form onSubmit={updateCard}>
             <Container component="main" maxWidth="xs">
@@ -128,12 +168,12 @@ export default function EditCard() {
                 <Box
                   component="div"
                   noValidate
-                  onSubmit={handelInput}
+                  onSubmit={handleInputChange}
                   sx={{ mt: 3 }}
                 >
                   <Grid container spacing={2}>
                     {structure.map((s) => (
-                      <Grid key={s.name} item xs={12} sm={s.block ? 12 : 6}>
+                      <Grid key={s.name} formData xs={12} sm={s.block ? 12 : 6}>
                         {s.type === "boolean" ? (
                           <FormControlLabel
                             name={s.name}
@@ -148,8 +188,10 @@ export default function EditCard() {
                             id={s.name}
                             label={s.label}
                             type={s.type}
-                            value={item[s.name]}
-                            onChange={handelInput}
+                            value={formData[s.name]}
+                            error={!!errors[s.name]}
+                            helperText={errors[s.name] || ''}
+                            onChange={handleInputChange}
                           />
                         )}
                       </Grid>
@@ -159,8 +201,9 @@ export default function EditCard() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 2, mb: 3 }}
                     onClick={updateCard}
+                    disabled={!isValid}
                   >
                     SUBMIT
                   </Button>
