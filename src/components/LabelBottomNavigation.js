@@ -11,8 +11,6 @@ import "./LabelBottomNavigation.css";
 import { GeneralContext } from "../App";
 import { RoleTypes, checkPermissions } from "./Roles";
 
-//import "./Lab.css"; // Import the darkmode styles
-
 const pages = [
   { route: "/", label: "Home", icon: <Home /> },
   {

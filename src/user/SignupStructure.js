@@ -129,5 +129,4 @@ export const structure = [
   street: Joi.string().min(3).required(),
   houseNumber: Joi.number().required(),
   zip: Joi.number().required(),
-  // Add validation rules for other fields here
 });

@@ -1,4 +1,3 @@
-
 import { useState, useContext } from "react";
 import React, { useEffect } from "react";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
@@ -101,8 +100,6 @@ export default function Navbar({ toggleDarkMode }) {
 
     handleCloseUserMenu();
   };
-
-  console.log("link ", info.imgUrl);
 
   return (
     <AppBar

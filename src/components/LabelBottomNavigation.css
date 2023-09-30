@@ -7,7 +7,7 @@
   display: flex;
   justify-content: center; 
   align-items: center;
-  color: black; /* Set text color to white in dark mode */
+  color: black; 
 }
 
   .custom-bottom-navigation .MuiBottomNavigationAction-root {
@@ -19,10 +19,9 @@
     color: grey !important;
   }
 
-/* darkmode.css */
 .dark-mode .custom-bottom-navigation {
   background-color: black !important; 
-  color: white; /* Set text color to white in dark mode */
+  color: white; 
   position: fixed;
   bottom: 0;
   left: 0;

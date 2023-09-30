@@ -73,7 +73,6 @@ export default function EditAccount({ item, itemChange }) {
 
   
   const handleBusinessChange = (event) => {
-    // Toggle the business value when the Switch is clicked
     setFormData({ ...formData, business: event.target.checked });
   };
     
@@ -103,7 +102,8 @@ export default function EditAccount({ item, itemChange }) {
     setErrors(newErrors);
     setIsValid(!Object.keys(newErrors).length);
 
-  };
+  
+};
 
   function save(ev) {
     ev.preventDefault();
@@ -132,7 +132,6 @@ export default function EditAccount({ item, itemChange }) {
   })
       .catch((error) => {
         console.error("Error saving data:", error);
-        // snackbar(error);
 
       })
       .finally(() => {

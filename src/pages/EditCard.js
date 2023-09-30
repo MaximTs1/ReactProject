@@ -14,7 +14,6 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { structure, cardSchema } from "./AddCardStructure";
 import "../user/Signup.css";
 
-// Constants for API endpoint and token
 const API_ENDPOINT = "https://api.shipap.co.il/cards";
 const API_TOKEN = "9e7d1125-5381-11ee-becb-14dda9d4a5f0";
 
@@ -91,7 +90,6 @@ export default function EditCard() {
   };
   
   const updateCard = (ev) => {
-    console.log("formData: ", formData);
 
     ev.preventDefault();
     setLoader(true);

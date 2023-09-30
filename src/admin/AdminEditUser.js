@@ -52,9 +52,6 @@ export default function AdminEditUser() {
     // Toggle the business value when the Switch is clicked
     setFormData({ ...formData, business: event.target.checked });
   };
-
-  console.log("accountId", accountId);
-
   
   useEffect(() => {
     setLoader(true);
@@ -66,12 +63,10 @@ export default function AdminEditUser() {
         if (!res.ok) {
           throw new Error(`Network response was not ok: ${res.status}`);
         }
-        console.log(res);
 
         return res.json();
       })
       .then((data) => {
-      console.log(data);
       setFormData(data.find((user) => user.id === accountId));
   })
   

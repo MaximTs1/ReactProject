@@ -19,13 +19,11 @@ import "../user/Signup.css";
 
 const defaultTheme = createTheme();
 
-
 export default function Login() {
   const { setUser, setLoader, setRoleType, snackbar  } = useContext(GeneralContext);
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -152,3 +150,4 @@ export default function Login() {
     </ThemeProvider>
   );
 }
+

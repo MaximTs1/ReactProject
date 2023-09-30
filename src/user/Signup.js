@@ -23,9 +23,7 @@ export default function Signup() {
   const { setLoader } = useContext(GeneralContext);
   const navigate = useNavigate();
 
-    
-
-  const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
     lastName:  "",
@@ -75,7 +73,6 @@ export default function Signup() {
     setErrors(newErrors);
     setIsValid(!Object.keys(newErrors).length);
   };
-  
 
   const handleSubmit = (ev) => {
     ev.preventDefault();

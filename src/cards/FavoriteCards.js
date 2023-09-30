@@ -9,7 +9,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import Typography from "@mui/material/Typography";
 import { GeneralContext } from "../App";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Cards.css";
 
 export default function Cards() {
@@ -57,7 +57,6 @@ export default function Cards() {
       .then(() => {
         setCards(cards.filter((c) => c.id !== id));
       })
-      .catch((err) => console.log(err))
       .finally(() => setLoader(false));
   };
 
@@ -85,16 +84,12 @@ export default function Cards() {
         .then(() => {
           snackbar(`Card ${method === 'favorite' ? 'added to' : 'removed from'} favorites`);
           if (method === "unfavorite") {
-            // Reload the page after unfavorite
             window.location.reload();
           }
         })
-        .catch((err) => console.log(err))
         .finally(() => setLoader(false));
     }
   };
-
-
 
   return (
     <div className="Cards">
@@ -163,7 +158,8 @@ export default function Cards() {
                 </IconButton>
               )}
               
-              {user && (roleType === 3 || user.id === c.clientId) ? (                <IconButton
+              {user && (roleType === 3 || user.id === c.clientId) ? (            
+                <IconButton
                   className="trash-icon"
                   sx={{ position: "absolute", right: "5px" }}
                   onClick={() => adminRemoveCard(c.id)}

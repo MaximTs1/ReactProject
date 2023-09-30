@@ -16,7 +16,6 @@ function Map({ location }) {
 
       const map = new window.google.maps.Map(mapRef.current, mapOptions);
 
-      // Create a marker for the location
       new window.google.maps.Marker({
         position: mapOptions.center,
         map: map,

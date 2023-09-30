@@ -14,7 +14,7 @@ import "./Cards.css";
 
 export default function Cards() {
   const [cards, setCards] = useState([]);
-  const { setLoader, user, roleType, searchWord } = useContext(GeneralContext);
+  const { setLoader, user, roleType, searchWord, snackbar } = useContext(GeneralContext);
 
   const navigate = useNavigate();
 
@@ -39,8 +39,7 @@ export default function Cards() {
         setCards(data);
       })
       .finally(() => setLoader(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchWord]); // Update cards when searchWord changes
+  }, [searchWord]); 
 
   const adminRemoveCard = (id) => {
     if (!window.confirm("Are you sure you want to remove this card?")) {
@@ -57,7 +56,6 @@ export default function Cards() {
       .then(() => {
         setCards(cards.filter((c) => c.id !== id));
       })
-      .catch((err) => console.log(err))
       .finally(() => setLoader(false));
   };
 
@@ -69,7 +67,6 @@ export default function Cards() {
     if (cardIndex !== -1) {
       const isFavorite = updatedCards[cardIndex].favorite;
 
-      // Toggle the favorite status
       updatedCards[cardIndex].favorite = !isFavorite;
       setCards(updatedCards);
 
@@ -83,18 +80,14 @@ export default function Cards() {
         }
       )
         .then(() => {
-          // snackbar(`Card ${method === 'favorite' ? 'added to' : 'removed from'} favorites`);
+          snackbar(`Card ${method === 'favorite' ? 'added to' : 'removed from'} favorites`);
           if (method === "unfavorite") {
-            // Reload the page after unfavorite
             window.location.reload();
           }
         })
-        .catch((err) => console.log(err))
         .finally(() => setLoader(false));
     }
   };
-
-
 
   return (
     <div className="Cards">

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -25,7 +24,6 @@ export default function Cards() {
   useEffect(() => {
     setLoader(true);
 
-    // Fetch user's favorite cards
     fetch(
       `https://api.shipap.co.il/cards/favorite?token=9e7d1125-5381-11ee-becb-14dda9d4a5f0`,
       {
@@ -71,7 +69,6 @@ export default function Cards() {
         setCards(cards.filter((c) => c.id !== id));
         snackbar("The card was deleted");
       })
-      .catch((err) => console.log(err))
       .finally(() => setLoader(false));
   };
 
@@ -109,7 +106,6 @@ export default function Cards() {
             snackbar("Card was removed from favorite page");
           }
         })
-        .catch((err) => console.log(err))
         .finally(() => setLoader(false));
     }
   };
@@ -209,7 +205,7 @@ export default function Cards() {
                   </IconButton>
                 ) : null}
 
-                {user && (roleType === 3 || user.id === c.clientId) ? (
+                {user && (c.clientId === 0  || user.id === c.clientId) ? (
                   <IconButton
                     className="edit-icon"
                     aria-label="edit"

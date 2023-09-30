@@ -1,4 +1,3 @@
-
 import Joi from "joi";
 
 export const structure = [
@@ -72,7 +71,12 @@ export const structure = [
     required: true,
     block: false,
   },
-  { name: "city", type: "text", label: "city", required: true, block: false },
+  { name: "city", 
+    type: "text",
+    label: "city", 
+    required: true, 
+    block: false 
+  },
   {
     name: "street",
     type: "text",
@@ -114,5 +118,4 @@ export const cardSchema = Joi.object({
   street: Joi.string().min(3).required(),
   houseNumber: Joi.number().required(),
   zip: Joi.number().required(),
-  // Add validation rules for other fields here
 });

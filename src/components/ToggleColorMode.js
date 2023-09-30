@@ -1,23 +1,3 @@
-// import React, { useState } from "react";
-// import Toggle from "react-toggle";
-// import Box from "@mui/material/Box";
-// import Toolbar from "@mui/material/Toolbar";
-
-// export const DarkModeToggle = () => {
-//   const [isDark, setIsDark] = useState(true);
-
-//   return (
-//     <Toggle
-//       checked={isDark}
-//       onChange={({ target }) => setIsDark(target.checked)}
-//       icons={{ checked: "🌙", unchecked: "🔆" }}
-//       aria-label="Dark mode toggle"
-//     />
-//   );
-// };
-
-//2
-
 import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
@@ -87,31 +67,3 @@ export default function ToggleColorMode() {
     </ColorModeContext.Provider>
   );
 }
-
-//3
-
-// import "./DarkMode.css";
-// import { createContext, useState } from "react";
-// import ReactSwitch from "react-switch";
-
-// export const ThemeContext = createContext(null);
-
-// function DarkMode() {
-//   const [theme, setTheme] = useState("dark");
-
-//   const toggleTheme = () => {
-//     setTheme((curr) => (curr === "light" ? "dark" : "light"));
-//   };
-//   return (
-//     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-//       <div className="DarkMode" id={theme}>
-//         <div className="switch">
-//           <label> {theme === "light" ? "" : ""}</label>
-//           <ReactSwitch onChange={toggleTheme} checked={theme === "dark"} />
-//         </div>
-//       </div>
-//     </ThemeContext.Provider>
-//   );
-// }
-
-// export default DarkMode;

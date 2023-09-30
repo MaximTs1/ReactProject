@@ -1,5 +1,5 @@
 import { useState, createContext, useEffect } from "react";
-import "./App.css"; // Import the CSS file
+import "./App.css"; 
 import Router from "./Router";
 import Navbar from "./components/Navbar";
 import { RoleTypes } from "../src/components/Roles";
@@ -13,7 +13,7 @@ export default function App() {
   const [user, setUser] = useState();
   const [loader, setLoader] = useState(true);
   const [roleType, setRoleType] = useState(RoleTypes.none);
-  const [darkMode, setDarkMode] = useState(false); // Dark mode state
+  const [darkMode, setDarkMode] = useState(false); 
   const [searchWord, setSearchWord] = useState("");
   const [snackbarText, setSnackbarText] = useState('');
 
@@ -57,8 +57,7 @@ export default function App() {
   }, []);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode); // Toggle dark mode state
-    // Add a class to the body element to enable/disable dark mode
+    setDarkMode(!darkMode); 
     if (!darkMode) {
       document.body.classList.add("dark-mode");
     } else {
@@ -79,10 +78,8 @@ export default function App() {
         setSearchWord,
         snackbar
       }}
-      // Pass dark mode state to Navbar
     >
       <Navbar toggleDarkMode={toggleDarkMode} />{" "}
-      {/* Pass toggleDarkMode function */}
       <Router />
       {loader && <Loader />}
       <LabelBottomNavigation />

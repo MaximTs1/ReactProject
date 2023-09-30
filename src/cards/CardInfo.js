@@ -49,7 +49,6 @@ export default function CardInfo() {
         return res.json();
       })
       .then(async (data) => {
-        // Convert address to latitude and longitude using geocoding
         const address = `${data.houseNumber} ${data.street}, ${data.city}, ${data.state}, ${data.country} ${data.zip}`;
         const locationData = await geocodeAddress(address);
         data.location = locationData;
@@ -61,7 +60,6 @@ export default function CardInfo() {
       .finally(() => setLoader(false));
   }, [cardId, setLoader]);
 
-  // Function to geocode an address using the Google Geocoding API
   const geocodeAddress = async (address) => {
     try {
       const response = await fetch(
