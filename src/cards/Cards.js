@@ -51,7 +51,7 @@ export default function Cards() {
         setCards(data);
       })
       .finally(() => setLoader(false));
-  }, [searchWord]); // Update cards when searchWord changes
+  }, [searchWord]); 
 
   const adminRemoveCard = (id) => {
     if (!window.confirm("Are you sure you want to remove this card?")) {
@@ -80,7 +80,6 @@ export default function Cards() {
     if (cardIndex !== -1) {
       const isFavorite = updatedCards[cardIndex].favorite;
 
-      // Toggle the favorite status
       updatedCards[cardIndex].favorite = !isFavorite;
       setCards(updatedCards);
 
@@ -94,7 +93,6 @@ export default function Cards() {
         }
       )
         .then(() => {
-          // Update favoriteCards state after successful API call
           const updatedFavoriteCards = isFavorite
             ? favoriteCards.filter((card) => card.id !== id)
             : [...favoriteCards, updatedCards[cardIndex]];
@@ -203,9 +201,9 @@ export default function Cards() {
                   >
                     <DeleteIcon style={{ color: "grey" }} />
                   </IconButton>
-                ) : null}
+                ) : null} 
 
-                {user && (c.clientId === 0  || user.id === c.clientId) ? (
+                {user && ((roleType === 3 && c.clientId === 0)  || (user.id === c.clientId)) ? (
                   <IconButton
                     className="edit-icon"
                     aria-label="edit"

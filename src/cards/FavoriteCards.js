@@ -169,7 +169,7 @@ export default function Cards() {
                 </IconButton>
               ) : null}
 
-                {user && (roleType === 3 || user.id === c.clientId) ? (
+              {user && ((roleType === 3 && c.clientId === 0)  || (user.id === c.clientId)) ? (
                 <IconButton
                   className="edit-icon"
                   aria-label="edit"
